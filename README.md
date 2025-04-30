@@ -319,3 +319,56 @@ You can also deploy your app manually, check out the [deployment documentation](
 ## Questions
 
 If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+
+# Payload CMS avec Traduction
+
+Ce projet est une implémentation de Payload CMS avec un système de traduction complet pour le français et l'anglais.
+
+## Architecture
+
+```
+src/
+├── app/
+│   └── (frontend)/
+│       └── [slug]/           # Pages dynamiques avec support multilingue
+├── components/
+│   └── LanguageSelector/     # Composant de sélection de langue
+├── middleware.ts             # Middleware pour la gestion des langues
+└── payload.config.ts         # Configuration Payload avec i18n
+```
+
+## Fonctionnement
+
+### 1. Configuration des langues
+- Français (par défaut) et Anglais supportés
+- Configuration dans `payload.config.ts` via la section `localization`
+- Fallback automatique vers le français si la traduction est manquante
+
+### 2. Gestion de la langue
+- Sélecteur de langue dans le header
+- Stockage de la préférence dans un cookie `payload-locale`
+- Rechargement de la page lors du changement de langue
+
+### 3. Flux de données
+1. Le middleware intercepte chaque requête
+2. La langue est extraite du cookie
+3. La langue est injectée dans les headers (`x-payload-locale`)
+4. Les pages récupèrent le contenu localisé via l'API Payload
+
+### 4. Interface d'administration
+- Interface de traduction intégrée
+- Champs localisables configurés dans les collections
+- Aperçu en temps réel des traductions
+
+## Utilisation
+
+1. Créer du contenu dans l'interface admin
+2. Ajouter les traductions via l'interface de traduction
+3. Le contenu s'affiche automatiquement dans la langue de l'utilisateur
+
+## Points clés
+
+- Pas de préfixes d'URL (/fr, /en)
+- Persistance de la langue via cookies
+- Fallback automatique vers le français
+- Support SEO avec métadonnées localisées
