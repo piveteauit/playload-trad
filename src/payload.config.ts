@@ -16,9 +16,25 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { fr } from '@payloadcms/translations/languages/fr'
+import { en } from '@payloadcms/translations/languages/en'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+export const localization = {
+  locales: [
+    {
+      label: 'Français',
+      code: 'fr',
+    },
+    {
+      label: 'English',
+      code: 'en',
+    },
+  ],
+  defaultLocale: 'fr',
+  fallback: true,
+}
 
 export default buildConfig({
   admin: {
@@ -91,18 +107,11 @@ export default buildConfig({
     },
     tasks: [],
   },
-  localization: {
-    locales: [
-      {
-        label: 'Français',
-        code: 'fr',
-      },
-      {
-        label: 'English',
-        code: 'en',
-      },
-    ],
-    defaultLocale: 'fr',
-    fallback: true,
+  i18n: {
+    supportedLanguages: {
+      fr,
+      en,
+    },
   },
+  localization,
 })

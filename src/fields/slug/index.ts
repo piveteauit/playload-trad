@@ -16,6 +16,7 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
     name: 'slugLock',
     type: 'checkbox',
     defaultValue: true,
+    localized: false,
     admin: {
       hidden: true,
       position: 'sidebar',

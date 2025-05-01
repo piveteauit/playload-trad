@@ -15,6 +15,7 @@ export const hero: Field = {
   fields: [
     {
       name: 'type',
+      localized: true,
       type: 'select',
       defaultValue: 'lowImpact',
       label: 'Type',
@@ -41,6 +42,7 @@ export const hero: Field = {
     {
       name: 'richText',
       type: 'richText',
+      localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
