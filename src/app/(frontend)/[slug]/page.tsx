@@ -89,6 +89,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const headersList = await headers()
   const locale = (headersList.get('x-payload-locale') || 'fr') as Locale
 
+  console.log('------->>>>>>>', locale)
+
   const page = await queryPageBySlug({
     slug,
     locale,
@@ -100,6 +102,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
+
+  console.log('-------', locale)
 
   const result = await payload.find({
     collection: 'pages',

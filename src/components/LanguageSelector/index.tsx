@@ -1,5 +1,6 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+
+import { useSearchParams, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 
 const LOCALES = [
@@ -7,35 +8,26 @@ const LOCALES = [
   { code: 'en', label: 'English' },
 ] as const
 
-export const LanguageSelector: React.FC = () => {
-  const [currentLocale, setCurrentLocale] = useState<string>('fr')
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-    const storedLocale = Cookies.get('payload-locale') || 'fr'
-    setCurrentLocale(storedLocale)
-    document.documentElement.lang = storedLocale
-  }, [])
+export const LanguageSelector = () => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const currentLocale = searchParams.get('locale') || Cookies.get('payload-locale') || 'fr'
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('locale', newLocale)
     Cookies.set('payload-locale', newLocale, { path: '/' })
     document.documentElement.lang = newLocale
-    setCurrentLocale(newLocale)
-
-    // Recharger la page pour appliquer la nouvelle langue
-    window.location.reload()
+    router.push(`?${params.toString()}`)
   }
 
-  if (!isClient) return null
-
   return (
-    <div className="relative inline-block">
+    <div className="inline-block relative">
       <select
         value={currentLocale}
         onChange={handleLanguageChange}
-        className="appearance-none bg-transparent border border-gray-300 rounded-md px-8 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+        className="bg-transparent px-8 py-2 pr-8 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer"
         style={{
           backgroundColor: 'transparent',
           color: 'inherit',
@@ -45,15 +37,15 @@ export const LanguageSelector: React.FC = () => {
           <option
             key={locale.code}
             value={locale.code}
-            className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           >
             {locale.label}
           </option>
         ))}
       </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+      <div className="right-0 absolute inset-y-0 flex items-center px-2 text-gray-500 pointer-events-none">
         <svg
-          className="h-4 w-4 fill-current"
+          className="fill-current w-4 h-4"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
         >

@@ -3,7 +3,10 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   // Récupérer la locale depuis le localStorage si disponible
-  const locale = request.cookies.get('payload-locale')?.value || 'fr'
+  const localeParams = request.nextUrl.searchParams.get('locale')
+  const locale = localeParams || request.cookies.get('payload-locale')?.value || 'fr'
+
+  if (localeParams !== locale) request.nextUrl.searchParams.set('locale', locale)
 
   // Ajouter la locale aux headers pour qu'elle soit accessible dans l'application
   const requestHeaders = new Headers(request.headers)
