@@ -72,3 +72,133 @@ export const hero: Field = {
   ],
   label: false,
 }
+
+// export const hero: Field = {
+//   type: 'tabs',
+//   tabs: [
+//     {
+//       name: 'hero_fr',
+//       fields: [
+//         {
+//           name: 'type',
+//           localized: true,
+//           type: 'select',
+//           defaultValue: 'lowImpact',
+//           label: 'Type',
+//           options: [
+//             {
+//               label: 'None',
+//               value: 'none',
+//             },
+//             {
+//               label: 'High Impact',
+//               value: 'highImpact',
+//             },
+//             {
+//               label: 'Medium Impact',
+//               value: 'mediumImpact',
+//             },
+//             {
+//               label: 'Low Impact',
+//               value: 'lowImpact',
+//             },
+//           ],
+//           required: true,
+//         },
+//         {
+//           name: 'richText',
+//           type: 'richText',
+//           localized: true,
+//           editor: lexicalEditor({
+//             features: ({ rootFeatures }) => {
+//               return [
+//                 ...rootFeatures,
+//                 HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+//                 FixedToolbarFeature(),
+//                 InlineToolbarFeature(),
+//               ]
+//             },
+//           }),
+//           label: false,
+//         },
+//         linkGroup({
+//           overrides: {
+//             maxRows: 2,
+//           },
+//         }),
+//         {
+//           name: 'media',
+//           type: 'upload',
+//           admin: {
+//             condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+//           },
+//           relationTo: 'media',
+//           required: true,
+//         },
+//       ],
+//       label: false,
+//     },
+//     {
+//       name: 'hero_en',
+//       fields: [
+//         {
+//           name: 'type',
+//           localized: true,
+//           type: 'select',
+//           defaultValue: 'lowImpact',
+//           label: 'Type',
+//           options: [
+//             {
+//               label: 'None',
+//               value: 'none',
+//             },
+//             {
+//               label: 'High Impact',
+//               value: 'highImpact',
+//             },
+//             {
+//               label: 'Medium Impact',
+//               value: 'mediumImpact',
+//             },
+//             {
+//               label: 'Low Impact',
+//               value: 'lowImpact',
+//             },
+//           ],
+//           required: true,
+//         },
+//         {
+//           name: 'richText',
+//           type: 'richText',
+//           localized: true,
+//           editor: lexicalEditor({
+//             features: ({ rootFeatures }) => {
+//               return [
+//                 ...rootFeatures,
+//                 HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+//                 FixedToolbarFeature(),
+//                 InlineToolbarFeature(),
+//               ]
+//             },
+//           }),
+//           label: false,
+//         },
+//         linkGroup({
+//           overrides: {
+//             maxRows: 2,
+//           },
+//         }),
+//         {
+//           name: 'media',
+//           type: 'upload',
+//           admin: {
+//             condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+//           },
+//           relationTo: 'media',
+//           required: true,
+//         },
+//       ],
+//       label: false,
+//     },
+//   ],
+// }

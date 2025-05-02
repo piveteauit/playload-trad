@@ -2,6 +2,7 @@
 
 import { useSearchParams, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
+import type { CustomComponent } from 'payload'
 
 const LOCALES = [
   { code: 'fr', label: 'Français' },
