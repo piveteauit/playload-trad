@@ -12,9 +12,10 @@ import { LanguageSelector } from '@/components/LanguageSelector'
 
 interface HeaderClientProps {
   data: Header
+  pageSlugs?: { [key: string]: string | null }
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, pageSlugs }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
@@ -37,7 +38,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <Logo loading="eager" priority="high" className="invert dark:invert-0" />
         </Link>
         <div className="flex items-center gap-4">
-          <LanguageSelector />
+          <LanguageSelector pageSlugs={pageSlugs} />
           <HeaderNav data={data} />
         </div>
       </div>

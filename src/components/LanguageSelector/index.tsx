@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
+import { usePathname } from 'next/navigation'
 
 const LOCALES = [
   { code: 'fr', label: 'Français' },
@@ -10,13 +11,43 @@ const LOCALES = [
 export const LanguageSelector: React.FC = () => {
   const [currentLocale, setCurrentLocale] = useState<string>('fr')
   const [isClient, setIsClient] = useState(false)
+  const [localizedSlugs, setLocalizedSlugs] = useState<{ [key: string]: string | null }>({})
+  const pathname = usePathname()
 
   useEffect(() => {
     setIsClient(true)
-    const storedLocale = Cookies.get('payload-locale') || 'fr'
-    setCurrentLocale(storedLocale)
-    document.documentElement.lang = storedLocale
-  }, [])
+    // Détecte la locale dans l'URL
+    const match = pathname.match(/^\/([a-z]{2})(?:\/(.+))?$/)
+    if (match) {
+      const locale = match[1] || 'fr'
+      setCurrentLocale(locale)
+      document.documentElement.lang = locale
+      const slug = match[2] || 'home'
+      fetch(`/api/pages?where[slug][equals]=${slug}&locale=${locale}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const page = data?.docs?.[0]
+          if (page && page.id) {
+            // Récupère tous les slugs localisés pour cette page
+            Promise.all(
+              LOCALES.map((loc) =>
+                fetch(`/api/pages?where[id][equals]=${page.id}&locale=${loc.code}`)
+                  .then((res) => res.json())
+                  .then((d) => ({ [loc.code]: d?.docs?.[0]?.slug || null })),
+              ),
+            ).then((results) => {
+              setLocalizedSlugs(Object.assign({}, ...results))
+            })
+          }
+        })
+    } else {
+      // fallback cookie si jamais l'URL ne matche pas
+      const storedLocale = Cookies.get('payload-locale')
+      const localeToUse = typeof storedLocale === 'string' && storedLocale ? storedLocale : 'fr'
+      setCurrentLocale(localeToUse as string)
+      document.documentElement.lang = localeToUse as string
+    }
+  }, [pathname])
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value
@@ -24,8 +55,15 @@ export const LanguageSelector: React.FC = () => {
     document.documentElement.lang = newLocale
     setCurrentLocale(newLocale)
 
-    // Recharger la page pour appliquer la nouvelle langue
-    window.location.reload()
+    if (localizedSlugs && localizedSlugs[newLocale]) {
+      if (localizedSlugs[newLocale] === 'home') {
+        window.location.href = `/${newLocale}`
+      } else {
+        window.location.href = `/${newLocale}/${localizedSlugs[newLocale]}`
+      }
+    } else {
+      window.location.href = `/${newLocale}`
+    }
   }
 
   if (!isClient) return null
