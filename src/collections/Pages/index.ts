@@ -1,4 +1,6 @@
+// src/collections/Pages/index.ts
 import type { CollectionConfig } from 'payload'
+import React from 'react'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -12,7 +14,7 @@ import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
-
+import LocaleSwitcher from '@/components/Selector'
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -21,7 +23,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-export const Pages: CollectionConfig<'pages'> = {
+export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
     create: authenticated,
@@ -51,6 +53,16 @@ export const Pages: CollectionConfig<'pages'> = {
     useAsTitle: 'title',
   },
   fields: [
+    {
+      name: 'locale-switcher',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: LocaleSwitcher as any,
+        },
+        position: 'sidebar', // ou retire cette ligne si tu veux le champ en haut
+      },
+    },
     {
       name: 'title',
       type: 'text',
@@ -133,7 +145,7 @@ export const Pages: CollectionConfig<'pages'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
       schedulePublish: true,
     },

@@ -13,6 +13,7 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { HeaderClient } from '@/Header/Component.client'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import LanguageSelector from '@/components/LanguageSelector'
 
 type Locale = 'fr' | 'en'
 
@@ -82,6 +83,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     <>
       {/* <HeaderClient data={headerData} pageSlugs={page.localizedSlugs} /> */}
       <article className="pt-16 pb-24">
+        <LanguageSelector />
         <PageClient />
         {/* Allows redirects for valid pages too */}
         <PayloadRedirects disableNotFound url={url} />
