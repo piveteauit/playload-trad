@@ -1,30 +1,35 @@
-'use client'
 import React from 'react'
 
 const LocaleSwitcher = (props: any) => {
-  // Récupère la locale courante depuis l'URL
-  let currentLocale = 'fr'
-  if (typeof window !== 'undefined') {
-    const params = new URLSearchParams(window.location.search)
-    currentLocale = params.get('locale') || 'fr'
-  }
+  // Utilise la locale passée par Payload, sinon fallback 'fr'
+  const currentLocale = props?.locale || 'fr'
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLocale = e.target.value
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href)
-      url.searchParams.set('locale', newLocale)
-      window.location.href = url.toString()
-    }
-  }
+  console.log('currentLocale', currentLocale)
 
   return (
     <div>
       <label style={{ fontWeight: 'bold', marginRight: 8 }}>Langue :</label>
-      <select value={currentLocale} onChange={handleChange}>
-        <option value="fr">Français</option>
-        <option value="en">English</option>
-      </select>
+      <a
+        href="?locale=fr"
+        style={{
+          marginRight: 8,
+          fontWeight: currentLocale === 'fr' ? 'bold' : 'normal',
+          textDecoration: 'underline',
+          color: currentLocale === 'fr' ? '#0070f3' : 'inherit',
+        }}
+      >
+        Français
+      </a>
+      <a
+        href="?locale=en"
+        style={{
+          fontWeight: currentLocale === 'en' ? 'bold' : 'normal',
+          textDecoration: 'underline',
+          color: currentLocale === 'en' ? '#0070f3' : 'inherit',
+        }}
+      >
+        English
+      </a>
     </div>
   )
 }
